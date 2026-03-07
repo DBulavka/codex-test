@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -27,6 +28,19 @@ public class ClientService {
         clients.add(new Client(8L, "Наталья", "Морозова", "nat.m@mail.ru", "+79990000008", "Нижний Новгород", 22));
         clients.add(new Client(9L, "Павел", "Волков", "p.volkov@mail.ru", "+79990000009", "Ростов-на-Дону", 45));
         clients.add(new Client(10L, "Анна", "Лебедева", "anna.l@mail.ru", "+79990000010", "Краснодар", 31));
+    }
+
+    public List<ClientDto> getAll() {
+        return clients.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public Optional<ClientDto> getById(Long id) {
+        return clients.stream()
+                .filter(client -> client.id().equals(id))
+                .findFirst()
+                .map(this::toDto);
     }
 
     public List<ClientDto> search(ClientSearchRequest request) {
